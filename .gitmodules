@@ -1,0 +1,6 @@
+[submodule "mini-app"]
+	path = mini-app
+	url = https://github.com/KyroTask/mini-app.git
+[submodule "internal"]
+	path = internal
+	url = https://github.com/KyroTask/internal.git

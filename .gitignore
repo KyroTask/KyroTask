@@ -10,6 +10,20 @@
 /tmp/
 vendor/
 
+# Compiled binaries
+/server
+/tmp_server
+/cmd/server/server
+
+# Logs
+*.log
+
+# Compiled binaries
+/server
+/tmp_server
+/cmd/server/server
+*.log
+
 # Environment
 .env
 

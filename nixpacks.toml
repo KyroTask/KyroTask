@@ -1,0 +1,23 @@
+[phases.setup]
+nixPkgs = ["...", "go", "nodejs"]
+
+[variables]
+# Fixes the "crypto.hash" error from your previous build
+NIXPACKS_NODEJS_VERSION = "22" 
+
+[phases.install]
+cmds = [
+  "go mod download",
+  "npm install",
+  "cd mini-app && npm install"
+]
+
+[phases.build]
+cmds = [
+  "go build -o out ./cmd/server",
+  "cd mini-app && npm run build"
+]
+
+[start]
+# Instead of dev, we run the compiled Go binary
+cmd = "./out"

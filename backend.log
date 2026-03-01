@@ -1,0 +1,171 @@
+2025/12/21 14:52:11 Connected to sqlite database
+
+2025/12/21 14:52:11 [32m/home/bif26/Desktop/FULL stock/telegram-task-manager/internal/database/database.go:47
+[0m[33m[0.066ms] [34;1m[rows:-][0m SELECT count(*) FROM sqlite_master WHERE type='table' AND name="users"
+
+2025/12/21 14:52:11 [32m/home/bif26/Desktop/FULL stock/telegram-task-manager/internal/database/database.go:47
+[0m[33m[2.490ms] [34;1m[rows:0][0m CREATE TABLE `users` (`id` integer PRIMARY KEY AUTOINCREMENT,`telegram_id` integer NOT NULL,`username` text,`first_name` text,`last_name` text,`photo_url` text,`is_bot` numeric,`language_code` text,`created_at` datetime,`updated_at` datetime)
+
+2025/12/21 14:52:11 [32m/home/bif26/Desktop/FULL stock/telegram-task-manager/internal/database/database.go:47
+[0m[33m[3.429ms] [34;1m[rows:0][0m CREATE UNIQUE INDEX `idx_users_telegram_id` ON `users`(`telegram_id`)
+
+2025/12/21 14:52:11 [32m/home/bif26/Desktop/FULL stock/telegram-task-manager/internal/database/database.go:47
+[0m[33m[0.072ms] [34;1m[rows:-][0m SELECT count(*) FROM sqlite_master WHERE type='table' AND name="telegram_accounts"
+
+2025/12/21 14:52:11 [32m/home/bif26/Desktop/FULL stock/telegram-task-manager/internal/database/database.go:47
+[0m[33m[6.709ms] [34;1m[rows:0][0m CREATE TABLE `telegram_accounts` (`id` integer PRIMARY KEY AUTOINCREMENT,`user_id` integer NOT NULL,`chat_id` integer,`is_linked` numeric,`created_at` datetime,CONSTRAINT `fk_telegram_accounts_user` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`))
+
+2025/12/21 14:52:11 [32m/home/bif26/Desktop/FULL stock/telegram-task-manager/internal/database/database.go:47
+[0m[33m[6.440ms] [34;1m[rows:0][0m CREATE UNIQUE INDEX `idx_telegram_accounts_chat_id` ON `telegram_accounts`(`chat_id`)
+
+2025/12/21 14:52:11 [32m/home/bif26/Desktop/FULL stock/telegram-task-manager/internal/database/database.go:47
+[0m[33m[0.114ms] [34;1m[rows:-][0m SELECT count(*) FROM sqlite_master WHERE type='table' AND name="projects"
+
+2025/12/21 14:52:11 [32m/home/bif26/Desktop/FULL stock/telegram-task-manager/internal/database/database.go:47
+[0m[33m[8.734ms] [34;1m[rows:0][0m CREATE TABLE `projects` (`id` integer PRIMARY KEY AUTOINCREMENT,`user_id` integer NOT NULL,`name` text NOT NULL,`description` text,`color` text,`icon` text,`is_archived` numeric DEFAULT false,`created_at` datetime,`updated_at` datetime,CONSTRAINT `fk_projects_user` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`))
+
+2025/12/21 14:52:11 [32m/home/bif26/Desktop/FULL stock/telegram-task-manager/internal/database/database.go:47
+[0m[33m[2.748ms] [34;1m[rows:0][0m CREATE INDEX `idx_projects_user_id` ON `projects`(`user_id`)
+
+2025/12/21 14:52:11 [32m/home/bif26/Desktop/FULL stock/telegram-task-manager/internal/database/database.go:47
+[0m[33m[0.091ms] [34;1m[rows:-][0m SELECT count(*) FROM sqlite_master WHERE type='table' AND name="tasks"
+
+2025/12/21 14:52:11 [32m/home/bif26/Desktop/FULL stock/telegram-task-manager/internal/database/database.go:47
+[0m[33m[3.457ms] [34;1m[rows:0][0m CREATE TABLE `tasks` (`id` integer PRIMARY KEY AUTOINCREMENT,`project_id` integer,`user_id` integer NOT NULL,`parent_id` integer,`title` text NOT NULL,`description` text,`status` text DEFAULT "pending",`priority` text DEFAULT "medium",`due_date` datetime,`completed_at` datetime,`position` integer DEFAULT 0,`created_at` datetime,`updated_at` datetime,CONSTRAINT `fk_tasks_user` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`),CONSTRAINT `fk_tasks_subtasks` FOREIGN KEY (`parent_id`) REFERENCES `tasks`(`id`),CONSTRAINT `fk_projects_tasks` FOREIGN KEY (`project_id`) REFERENCES `projects`(`id`))
+
+2025/12/21 14:52:11 [32m/home/bif26/Desktop/FULL stock/telegram-task-manager/internal/database/database.go:47
+[0m[33m[2.485ms] [34;1m[rows:0][0m CREATE INDEX `idx_tasks_user_id` ON `tasks`(`user_id`)
+
+2025/12/21 14:52:11 [32m/home/bif26/Desktop/FULL stock/telegram-task-manager/internal/database/database.go:47
+[0m[33m[2.514ms] [34;1m[rows:0][0m CREATE INDEX `idx_tasks_project_id` ON `tasks`(`project_id`)
+
+2025/12/21 14:52:11 [32m/home/bif26/Desktop/FULL stock/telegram-task-manager/internal/database/database.go:47
+[0m[33m[2.153ms] [34;1m[rows:0][0m CREATE INDEX `idx_tasks_parent_id` ON `tasks`(`parent_id`)
+
+2025/12/21 14:52:11 [32m/home/bif26/Desktop/FULL stock/telegram-task-manager/internal/database/database.go:47
+[0m[33m[0.069ms] [34;1m[rows:-][0m SELECT count(*) FROM sqlite_master WHERE type='table' AND name="tags"
+
+2025/12/21 14:52:11 [32m/home/bif26/Desktop/FULL stock/telegram-task-manager/internal/database/database.go:47
+[0m[33m[13.770ms] [34;1m[rows:0][0m CREATE TABLE `tags` (`id` integer PRIMARY KEY AUTOINCREMENT,`user_id` integer NOT NULL,`name` text NOT NULL,`color` text,`created_at` datetime)
+
+2025/12/21 14:52:11 [32m/home/bif26/Desktop/FULL stock/telegram-task-manager/internal/database/database.go:47
+[0m[33m[4.609ms] [34;1m[rows:0][0m CREATE INDEX `idx_tags_user_id` ON `tags`(`user_id`)
+
+2025/12/21 14:52:11 [32m/home/bif26/Desktop/FULL stock/telegram-task-manager/internal/database/database.go:47
+[0m[33m[0.141ms] [34;1m[rows:-][0m SELECT count(*) FROM sqlite_master WHERE type='table' AND name="task_tags"
+
+2025/12/21 14:52:11 [32m/home/bif26/Desktop/FULL stock/telegram-task-manager/internal/database/database.go:47
+[0m[33m[10.771ms] [34;1m[rows:0][0m CREATE TABLE `task_tags` (`task_id` integer,`tag_id` integer,PRIMARY KEY (`task_id`,`tag_id`),CONSTRAINT `fk_task_tags_task` FOREIGN KEY (`task_id`) REFERENCES `tasks`(`id`),CONSTRAINT `fk_task_tags_tag` FOREIGN KEY (`tag_id`) REFERENCES `tags`(`id`))
+
+2025/12/21 14:52:11 [32m/home/bif26/Desktop/FULL stock/telegram-task-manager/internal/database/database.go:47
+[0m[33m[0.161ms] [34;1m[rows:-][0m SELECT count(*) FROM sqlite_master WHERE type='table' AND name="comments"
+
+2025/12/21 14:52:11 [32m/home/bif26/Desktop/FULL stock/telegram-task-manager/internal/database/database.go:47
+[0m[33m[4.974ms] [34;1m[rows:0][0m CREATE TABLE `comments` (`id` integer PRIMARY KEY AUTOINCREMENT,`task_id` integer NOT NULL,`user_id` integer NOT NULL,`content` text NOT NULL,`created_at` datetime,`updated_at` datetime,CONSTRAINT `fk_comments_user` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`),CONSTRAINT `fk_tasks_comments` FOREIGN KEY (`task_id`) REFERENCES `tasks`(`id`))
+
+2025/12/21 14:52:11 [32m/home/bif26/Desktop/FULL stock/telegram-task-manager/internal/database/database.go:47
+[0m[33m[8.813ms] [34;1m[rows:0][0m CREATE INDEX `idx_comments_task_id` ON `comments`(`task_id`)
+
+2025/12/21 14:52:11 [32m/home/bif26/Desktop/FULL stock/telegram-task-manager/internal/database/database.go:47
+[0m[33m[0.181ms] [34;1m[rows:-][0m SELECT count(*) FROM sqlite_master WHERE type='table' AND name="goals"
+
+2025/12/21 14:52:11 [32m/home/bif26/Desktop/FULL stock/telegram-task-manager/internal/database/database.go:47
+[0m[33m[5.046ms] [34;1m[rows:0][0m CREATE TABLE `goals` (`id` integer PRIMARY KEY AUTOINCREMENT,`user_id` integer NOT NULL,`title` text NOT NULL,`description` text,`target_date` datetime,`progress` integer DEFAULT 0,`status` text DEFAULT "active",`created_at` datetime,`updated_at` datetime,CONSTRAINT `fk_goals_user` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`))
+
+2025/12/21 14:52:11 [32m/home/bif26/Desktop/FULL stock/telegram-task-manager/internal/database/database.go:47
+[0m[33m[4.345ms] [34;1m[rows:0][0m CREATE INDEX `idx_goals_user_id` ON `goals`(`user_id`)
+
+2025/12/21 14:52:11 [32m/home/bif26/Desktop/FULL stock/telegram-task-manager/internal/database/database.go:47
+[0m[33m[0.096ms] [34;1m[rows:-][0m SELECT count(*) FROM sqlite_master WHERE type='table' AND name="goal_tasks"
+
+2025/12/21 14:52:11 [32m/home/bif26/Desktop/FULL stock/telegram-task-manager/internal/database/database.go:47
+[0m[33m[11.186ms] [34;1m[rows:0][0m CREATE TABLE `goal_tasks` (`goal_id` integer,`task_id` integer,PRIMARY KEY (`goal_id`,`task_id`),CONSTRAINT `fk_goal_tasks_goal` FOREIGN KEY (`goal_id`) REFERENCES `goals`(`id`),CONSTRAINT `fk_goal_tasks_task` FOREIGN KEY (`task_id`) REFERENCES `tasks`(`id`))
+
+2025/12/21 14:52:11 [32m/home/bif26/Desktop/FULL stock/telegram-task-manager/internal/database/database.go:47
+[0m[33m[0.105ms] [34;1m[rows:-][0m SELECT count(*) FROM sqlite_master WHERE type='table' AND name="habits"
+
+2025/12/21 14:52:11 [32m/home/bif26/Desktop/FULL stock/telegram-task-manager/internal/database/database.go:47
+[0m[33m[10.775ms] [34;1m[rows:0][0m CREATE TABLE `habits` (`id` integer PRIMARY KEY AUTOINCREMENT,`user_id` integer NOT NULL,`name` text NOT NULL,`description` text,`frequency` text DEFAULT "daily",`current_streak` integer DEFAULT 0,`best_streak` integer DEFAULT 0,`is_active` numeric DEFAULT true,`created_at` datetime,`updated_at` datetime,CONSTRAINT `fk_habits_user` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`))
+
+2025/12/21 14:52:11 [32m/home/bif26/Desktop/FULL stock/telegram-task-manager/internal/database/database.go:47
+[0m[33m[6.527ms] [34;1m[rows:0][0m CREATE INDEX `idx_habits_user_id` ON `habits`(`user_id`)
+
+2025/12/21 14:52:11 [32m/home/bif26/Desktop/FULL stock/telegram-task-manager/internal/database/database.go:47
+[0m[33m[0.103ms] [34;1m[rows:-][0m SELECT count(*) FROM sqlite_master WHERE type='table' AND name="habit_logs"
+
+2025/12/21 14:52:11 [32m/home/bif26/Desktop/FULL stock/telegram-task-manager/internal/database/database.go:47
+[0m[33m[3.782ms] [34;1m[rows:0][0m CREATE TABLE `habit_logs` (`id` integer PRIMARY KEY AUTOINCREMENT,`habit_id` integer NOT NULL,`user_id` integer NOT NULL,`log_date` datetime NOT NULL,`completed` numeric DEFAULT true,`note` text,`created_at` datetime,CONSTRAINT `fk_habits_logs` FOREIGN KEY (`habit_id`) REFERENCES `habits`(`id`))
+
+2025/12/21 14:52:11 [32m/home/bif26/Desktop/FULL stock/telegram-task-manager/internal/database/database.go:47
+[0m[33m[3.982ms] [34;1m[rows:0][0m CREATE INDEX `idx_habit_logs_log_date` ON `habit_logs`(`log_date`)
+
+2025/12/21 14:52:11 [32m/home/bif26/Desktop/FULL stock/telegram-task-manager/internal/database/database.go:47
+[0m[33m[3.082ms] [34;1m[rows:0][0m CREATE INDEX `idx_habit_logs_habit_id` ON `habit_logs`(`habit_id`)
+
+2025/12/21 14:52:11 [32m/home/bif26/Desktop/FULL stock/telegram-task-manager/internal/database/database.go:47
+[0m[33m[0.070ms] [34;1m[rows:-][0m SELECT count(*) FROM sqlite_master WHERE type='table' AND name="activities"
+
+2025/12/21 14:52:11 [32m/home/bif26/Desktop/FULL stock/telegram-task-manager/internal/database/database.go:47
+[0m[33m[5.237ms] [34;1m[rows:0][0m CREATE TABLE `activities` (`id` integer PRIMARY KEY AUTOINCREMENT,`user_id` integer NOT NULL,`resource_type` text NOT NULL,`resource_id` integer NOT NULL,`action` text NOT NULL,`description` text,`metadata` text,`created_at` datetime,CONSTRAINT `fk_activities_user` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`))
+
+2025/12/21 14:52:11 [32m/home/bif26/Desktop/FULL stock/telegram-task-manager/internal/database/database.go:47
+[0m[33m[3.774ms] [34;1m[rows:0][0m CREATE INDEX `idx_activities_user_id` ON `activities`(`user_id`)
+2025/12/21 14:52:11 Database migrations completed successfully
+[GIN-debug] [WARNING] Creating an Engine instance with the Logger and Recovery middleware already attached.
+
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] GET    /health                   --> github.com/bif12/telegram-task-manager/internal/handlers.HealthCheck (4 handlers)
+[GIN-debug] GET    /api/v1/health            --> github.com/bif12/telegram-task-manager/internal/handlers.HealthCheck (4 handlers)
+[GIN-debug] POST   /api/v1/auth/telegram/verify --> github.com/bif12/telegram-task-manager/internal/handlers.(*TelegramHandler).VerifyTelegramWebApp-fm (4 handlers)
+[GIN-debug] POST   /api/v1/telegram/webhook  --> github.com/bif12/telegram-task-manager/internal/handlers.(*TelegramHandler).HandleWebhook-fm (4 handlers)
+2025/12/21 14:52:11 Server starting on port :3001
+[GIN-debug] [WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.
+Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies for details.
+[GIN-debug] Listening and serving HTTP on :3001
+[GIN] 2025/12/21 - 14:53:04 | 200 |     142.646µs |             ::1 | GET      "/health"
+[GIN] 2025/12/21 - 14:59:22 | 404 |      55.796µs |             ::1 | POST     "/api/v1/auth/demo"
+[GIN] 2025/12/21 - 14:59:24 | 404 |      55.375µs |             ::1 | POST     "/api/v1/auth/demo"
+[GIN] 2025/12/21 - 14:59:25 | 404 |       7.747µs |             ::1 | POST     "/api/v1/auth/demo"
+[GIN] 2025/12/21 - 14:59:28 | 404 |       6.246µs |             ::1 | POST     "/api/v1/auth/demo"
+[GIN] 2025/12/21 - 14:59:30 | 404 |      35.531µs |             ::1 | POST     "/api/v1/auth/demo"
+[GIN] 2025/12/21 - 14:59:36 | 404 |       8.298µs |             ::1 | POST     "/api/v1/auth/demo"
+[GIN] 2025/12/21 - 15:00:13 | 404 |       6.617µs |             ::1 | POST     "/api/v1/auth/demo"
+[GIN] 2025/12/21 - 15:00:23 | 404 |       8.395µs |             ::1 | POST     "/api/v1/auth/demo"
+[GIN] 2025/12/21 - 15:02:08 | 404 |      87.351µs |             ::1 | POST     "/api/v1/auth/demo"
+[GIN] 2025/12/21 - 15:03:41 | 404 |      53.721µs |             ::1 | POST     "/api/v1/auth/demo"
+[GIN] 2025/12/21 - 15:05:32 | 404 |     105.138µs |             ::1 | POST     "/api/v1/auth/demo"
+[GIN] 2025/12/21 - 15:05:34 | 404 |      72.065µs |             ::1 | POST     "/api/v1/auth/demo"
+[GIN] 2025/12/21 - 15:05:37 | 404 |      49.416µs |             ::1 | POST     "/api/v1/auth/demo"
+[GIN] 2025/12/21 - 15:05:47 | 404 |       6.085µs |             ::1 | POST     "/api/v1/auth/demo"
+[GIN] 2025/12/21 - 15:05:48 | 404 |       33.43µs |             ::1 | POST     "/api/v1/auth/demo"
+[GIN] 2025/12/21 - 15:07:24 | 404 |       8.212µs |             ::1 | POST     "/api/v1/auth/demo"
+[GIN] 2025/12/21 - 15:07:59 | 404 |      44.298µs |             ::1 | POST     "/api/v1/auth/demo"
+[GIN] 2025/12/21 - 15:08:12 | 404 |       96.53µs |             ::1 | POST     "/api/v1/auth/demo"
+[GIN] 2025/12/21 - 15:08:13 | 404 |      19.834µs |             ::1 | POST     "/api/v1/auth/demo"
+[GIN] 2025/12/21 - 15:08:14 | 404 |       73.18µs |             ::1 | POST     "/api/v1/auth/demo"
+[GIN] 2025/12/21 - 15:09:13 | 404 |       7.451µs |             ::1 | POST     "/api/v1/auth/demo"
+[GIN] 2025/12/21 - 15:09:18 | 404 |       54.45µs |             ::1 | POST     "/api/v1/auth/demo"
+[GIN] 2025/12/21 - 15:09:19 | 404 |       7.862µs |             ::1 | POST     "/api/v1/auth/demo"
+[GIN] 2025/12/21 - 15:09:20 | 404 |       6.137µs |             ::1 | POST     "/api/v1/auth/demo"
+[GIN] 2025/12/21 - 15:09:21 | 404 |       6.003µs |             ::1 | POST     "/api/v1/auth/demo"
+[GIN] 2025/12/21 - 15:09:22 | 404 |       8.795µs |             ::1 | POST     "/api/v1/auth/demo"
+[GIN] 2025/12/21 - 15:09:22 | 404 |       6.762µs |             ::1 | POST     "/api/v1/auth/demo"
+[GIN] 2025/12/21 - 15:09:22 | 404 |       6.969µs |             ::1 | POST     "/api/v1/auth/demo"
+[GIN] 2025/12/21 - 15:10:34 | 404 |       39.65µs |             ::1 | POST     "/api/v1/auth/demo"
+[GIN] 2025/12/21 - 15:10:37 | 404 |       6.211µs |             ::1 | POST     "/api/v1/auth/demo"
+[GIN] 2025/12/21 - 15:10:38 | 404 |       8.285µs |             ::1 | POST     "/api/v1/auth/demo"
+[GIN] 2025/12/21 - 15:10:38 | 404 |      40.506µs |             ::1 | POST     "/api/v1/auth/demo"
+[GIN] 2025/12/21 - 15:10:38 | 404 |       7.935µs |             ::1 | POST     "/api/v1/auth/demo"
+[GIN] 2025/12/21 - 15:11:53 | 404 |       2.504µs |             ::1 | POST     "/api/v1/auth/demo"
+[GIN] 2025/12/21 - 15:12:15 | 404 |      10.631µs |             ::1 | POST     "/api/v1/auth/demo"
+[GIN] 2025/12/21 - 15:13:08 | 404 |       7.343µs |             ::1 | POST     "/api/v1/auth/demo"
+[GIN] 2025/12/21 - 15:13:09 | 404 |       42.15µs |             ::1 | POST     "/api/v1/auth/demo"
+[GIN] 2025/12/21 - 15:13:33 | 404 |       6.594µs |             ::1 | POST     "/api/v1/auth/demo"
+[GIN] 2025/12/21 - 15:13:34 | 404 |       8.086µs |             ::1 | POST     "/api/v1/auth/demo"
+[GIN] 2025/12/21 - 15:13:35 | 404 |       7.542µs |             ::1 | POST     "/api/v1/auth/demo"
+[GIN] 2025/12/21 - 15:13:35 | 404 |       5.042µs |             ::1 | POST     "/api/v1/auth/demo"
+[GIN] 2025/12/21 - 15:13:57 | 200 |     935.102µs |             ::1 | GET      "/health"
+[GIN] 2025/12/21 - 15:14:10 | 200 |     266.818µs |             ::1 | GET      "/api/v1/health"

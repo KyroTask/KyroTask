@@ -1,0 +1,56 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+:root {
+  --telegram-bg-color: #ffffff;
+  --telegram-text-color: #000000;
+  --telegram-hint-color: #999999;
+  --telegram-link-color: #2481cc;
+  --telegram-button-color: #2481cc;
+  --telegram-button-text-color: #ffffff;
+  --telegram-secondary-bg-color: #f4f4f5;
+}
+
+html.dark {
+  --telegram-bg-color: #0f172a;
+  --telegram-text-color: #f8fafc;
+  --telegram-hint-color: #94a3b8;
+  --telegram-link-color: #6366f1;
+  --telegram-button-color: #6366f1;
+  --telegram-button-text-color: #ffffff;
+  --telegram-secondary-bg-color: #1e293b;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--telegram-bg-color);
+  color: var(--telegram-text-color);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#app {
+  min-height: 100vh;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #e2e8f0;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #cbd5e1;
+}

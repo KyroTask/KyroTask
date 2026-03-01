@@ -1,0 +1,20 @@
+{
+  "name": "kyrotask",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Full-stack Telegram Mini App for task management",
+  "scripts": {
+    "dev": "concurrently \"npm:dev:server\" \"npm:dev:client\"",
+    "dev:server": "~/go/bin/air",
+    "dev:client": "cd mini-app && npm run dev",
+    "build": "cd mini-app && npm run build",
+    "build:all": "npm run build && go build -o bin/server ./cmd/server",
+    "start": "./bin/server"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "dependencies": {
+    "firebase": "^12.10.0"
+  }
+}
